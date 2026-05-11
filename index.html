@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IRSC - International Research Standards Council</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    .step {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    .step.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step::before {
+      transition: all 0.5s ease;
+    }
+
+    .step.active::before {
+      background: #16a34a;
+      box-shadow: 0 0 0 6px rgba(22,163,74,0.15);
+      transform: scale(1.2);
+    }
+
+    .pipeline-progress {
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 4px;
+      height: 0;
+      background: linear-gradient(to bottom, #0b3d91, #16a34a);
+      transition: height 0.3s ease;
+      z-index: 5;
+    }
+
+    .step p {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.6s ease;
+    }
+
+    .step.active p {
+      opacity: 1;
+      max-height: 300px;
+      margin-top: 10px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f1f5f9;
+      color: #111827;
+      overflow-x: hidden;
+    }
+
+    .top-strip {
+      background: #0f172a;
+      color: white;
+      padding: 10px 8%;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav {
+      background: white;
+      border-bottom: 1px solid #dbe3ee;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo h1 {
+      font-size: 34px;
+      color: #0b3d91;
+      font-weight: 800;
+    }
+
+    .logo p {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 34px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #1e293b;
+      font-weight: 600;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #0b3d91;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #ffffff, #eef4ff);
+      padding: 110px 8%;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 60px;
+      align-items: center;
+      border-bottom: 1px solid #dbe3ee;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #0b3d91;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      border-left: 4px solid #0b3d91;
+    }
+
+    .hero h2 {
+      font-size: 60px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      color: #0f172a;
+    }
+
+    .hero h2 span {
+      color: #0b3d91;
+    }
+
+    .hero p {
+      color: #475569;
+      line-height: 1.9;
+      font-size: 18px;
+      max-width: 700px;
+    }
+
+    .hero-buttons {
+      margin-top: 40px;
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 28px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: #0b3d91;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-panel {
+      background: white;
+      border: 1px solid #dbe3ee;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.06);
+    }
+
+    .hero-panel h3 {
+      color: #0b3d91;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .hero-panel ul {
+      list-style: none;
+    }
+
+    .hero-panel ul li {
+      padding: 14px 0;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    section {
+      padding: 90px 8%;
+    }
+
+    .section-heading {
+      margin-bottom: 50px;
+    }
+
+    .section-heading h2 {
+      font-size: 42px;
+      color: #0f172a;
+      margin-bottom: 18px;
+    }
+
+    .section-heading p {
+      color: #475569;
+      line-height: 1.8;
+      max-width: 850px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #dbe3ee;
+      padding: 35px;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      border-color: #0b3d91;
+      transform: translateY(-5px);
+    }
+
+    .card-id {
+      color: #0b3d91;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+
+    .card p {
+      color: #475569;
+      line-height: 1.8;
+    }
+
+    .pipeline {
+      position: relative;
+      margin-top: 40px;
+      padding-left: 40px;
+      border-left: 4px solid #0b3d91;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    .step {
+      position: relative;
+      background: white;
+      border: 1px solid #dbe3ee;
+      padding: 28px 28px 28px 70px;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.05);
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      left: -52px;
+      top: 35px;
+      width: 18px;
+      height: 18px;
+      background: #0b3d91;
+      border: 4px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px #dbeafe;
+    }
+
+    .step-number {
+      position: absolute;
+      left: 20px;
+      top: 24px;
+      width: 36px;
+      height: 36px;
+      background: #dbeafe;
+      color: #0b3d91;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .step h3 {
+      color: #0f172a;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #475569;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 50px 8%;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer h3 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    @media(max-width: 950px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2 {
+        font-size: 44px;
+      }
+
+      nav ul {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-strip">
+    <div>International Research Standards Council (IRSC)</div>
+    <div>Research Integrity • Scientific Standards • Ethical Validation</div>
+  </div>
+
+  <div class="bg-glow glow1"></div>
+  <div class="bg-glow glow2"></div>
+
+  <nav>
+    <div class="logo">
+      <h1>IRSC</h1>
+      <p>International Research Standards Council</p>
+    </div>
+
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#standards">Standards</a></li>
+      <li><a href="#pipeline">Validation</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="hero-badge">Independent International Research Standards Initiative</div>
+
+      <h2>
+        Establishing Standards for <span>Scientific Research</span>
+      </h2>
+
+      <p>
+        The International Research Standards Council (IRSC) is a standards-oriented initiative focused on scientific validation, ethical review frameworks, reproducibility protocols, and structured publication systems for research and innovation ecosystems.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn btn-primary">Explore Standards</button>
+        <button class="btn btn-secondary">Research Publications</button>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <h3>Core Focus Areas</h3>
+
+      <ul>
+        <li>Research Standards & Documentation</li>
+        <li>Scientific Ethics & Integrity</li>
+        <li>Open Publication Frameworks</li>
+        <li>Data Verification Protocols</li>
+        <li>Innovation Validation Systems</li>
+        <li>STEM & Emerging Technologies</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About IRSC</h2>
+
+    <p class="section-desc">
+      The International Research Standards Council is an independent initiative focused on scientific validation, ethical review systems, reproducibility standards, and transparent innovation frameworks.
+<br><br>    
+</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Mission</h3>
+        <p>
+          To establish accessible and transparent research standards for future scientific and technological innovation.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Vision</h3>
+        <p>
+          Building a globally connected ecosystem where credible research can be validated and openly shared.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Focus</h3>
+        <p>
+          Ethical AI systems, open science, STEM innovation, and scientific reproducibility.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="standards">
+    <h2 class="section-title">IRSC Standards</h2>
+
+    <p class="section-desc">
+      Structured protocols designed for transparency, reproducibility, and ethical technological development.
+<br><br>   
+ </p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-id">IRSC-AI-101</div>
+        <h3>AI Ethics & Transparency</h3>
+        <p>
+          Frameworks for responsible AI development, testing, and disclosure systems.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-id">IRSC-RP-201</div>
+        <h3>Research Publication Standards</h3>
+        <p>
+          Scientific formatting and verification protocols for publications.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-id">IRSC-DV-301</div>
+        <h3>Data Verification Protocols</h3>
+        <p>
+          Standards for data validation, reproducibility, and integrity checks.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <h2 class="section-title">Validation Pipeline</h2>
+
+    <p class="section-desc">
+      A structured review process ensuring ethical compliance, technical review, and scientific integrity.
+    </p>
+
+    <div class="pipeline">
+      <div class="pipeline-progress"></div>
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Research Submission</h3>
+        <p>
+          Research papers, technical documentation, datasets, or innovation reports are formally submitted for evaluation.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Technical Review</h3>
+        <p>
+          Subject reviewers analyze methodology, structure, references, technical accuracy, and scientific consistency.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Ethics & Integrity Screening</h3>
+        <p>
+          Submitted work undergoes integrity checks including plagiarism review, ethical compliance, and disclosure verification.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Validation & Verification</h3>
+        <p>
+          Reproducibility standards, data verification protocols, and technical validation frameworks are applied.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <h3>Certification & Publication</h3>
+        <p>
+          Approved research receives structured certification identifiers and may be archived within IRSC publication systems.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>
+      <h3>IRSC</h3>
+      <p>International Research Standards Council</p>
+    </div>
+
+    <div>
+      Structured Research • Ethical Validation • Scientific Standards
+    </div>
+  </footer>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const progress = document.querySelector('.pipeline-progress');
+
+    function animatePipeline() {
+      const triggerBottom = window.innerHeight * 0.85;
+
+      steps.forEach((step, index) => {
+        const rect = step.getBoundingClientRect();
+
+        if (rect.top < triggerBottom) {
+          setTimeout(() => {
+            step.classList.add('show');
+            step.classList.add('active');
+
+            const progressHeight = step.offsetTop + 80;
+            progress.style.height = progressHeight + 'px';
+          }, index * 400);
+        }
+      });
+    }
+
+    window.addEventListener('scroll', animatePipeline);
+    window.addEventListener('load', animatePipeline);
+  </script>
+
+</body>
+</html>
