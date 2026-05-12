@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>IRSC Standards Repository</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --bg:#f1f5f9;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#475569;
+      --border:#dbe3ee;
+      --primary:#0b3d91;
+      --top:#0f172a;
+      --hero1:#ffffff;
+      --hero2:#eef4ff;
+    }
+
+    body.dark{
+      --bg:#0b1220;
+      --card:#111827;
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --border:#263244;
+      --primary:#60a5fa;
+      --top:#020617;
+      --hero1:#0f172a;
+      --hero2:#111827;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+      transition:0.3s;
+    }
+
+    .top-strip{
+      background:var(--top);
+      color:white;
+      padding:10px 8%;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:14px;
+    }
+
+    nav{
+      background:var(--card);
+      padding:22px 8%;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+
+    .logo h1{
+      font-size:34px;
+      color:var(--primary);
+      font-weight:800;
+    }
+
+    .logo p{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:4px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .nav-actions{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .home-btn,
+    .theme-btn{
+      text-decoration:none;
+      background:var(--primary);
+      color:white;
+      padding:12px 22px;
+      border-radius:6px;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .theme-btn{
+      background:var(--top);
+    }
+
+    .home-btn:hover,
+    .theme-btn:hover{
+      opacity:0.9;
+    }
+
+    .hero{
+      padding:90px 8% 60px;
+      background:linear-gradient(to right,var(--hero1),var(--hero2));
+    }
+
+    .hero-badge{
+      display:inline-block;
+      background:#dbeafe;
+      color:#0b3d91;
+      padding:10px 18px;
+      border-left:4px solid var(--primary);
+      border-radius:6px;
+      margin-bottom:24px;
+      font-weight:600;
+    }
+
+    body.dark .hero-badge{
+      background:#1e3a5f;
+      color:#bfdbfe;
+    }
+
+    .hero h2{
+      font-size:56px;
+      color:var(--text);
+      line-height:1.2;
+      margin-bottom:24px;
+      max-width:900px;
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.9;
+      max-width:1000px;
+    }
+
+    section{
+      padding:80px 8%;
+    }
+
+    .section-heading{
+      margin-bottom:50px;
+    }
+
+    .section-heading h2{
+      font-size:42px;
+      margin-bottom:18px;
+      color:var(--text);
+    }
+
+    .section-heading p{
+      color:var(--muted);
+      line-height:1.8;
+      max-width:1000px;
+    }
+
+    .standard-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-left:6px solid var(--primary);
+      border-radius:10px;
+      padding:35px;
+      margin-bottom:30px;
+      box-shadow:0 8px 20px rgba(15,23,42,0.05);
+      transition:0.3s;
+    }
+
+    .standard-card:hover{
+      transform:translateY(-4px);
+    }
+
+    .standard-id{
+      display:inline-block;
+      background:#dbeafe;
+      color:#0b3d91;
+      padding:8px 14px;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:18px;
+      letter-spacing:1px;
+    }
+
+    body.dark .standard-id{
+      background:#1e3a5f;
+      color:#bfdbfe;
+    }
+
+    .standard-card h3{
+      font-size:30px;
+      color:var(--text);
+      margin-bottom:18px;
+    }
+
+    .standard-card p{
+      color:var(--muted);
+      line-height:1.9;
+      margin-bottom:22px;
+    }
+
+    .clause-list{
+      margin-left:20px;
+      color:var(--muted);
+    }
+
+    .clause-list li{
+      margin-bottom:14px;
+      line-height:1.8;
+    }
+
+    .legal-note{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-top:5px solid var(--primary);
+      padding:40px;
+      border-radius:10px;
+      margin-top:60px;
+    }
+
+    .legal-note h3{
+      margin-bottom:20px;
+      color:var(--text);
+      font-size:28px;
+    }
+
+    .legal-note p{
+      color:var(--muted);
+      line-height:1.9;
+      margin-bottom:18px;
+    }
+
+    footer{
+      background:var(--top);
+      color:#cbd5e1;
+      padding:50px 8%;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    footer h3{
+      color:white;
+      margin-bottom:10px;
+    }
+
+    @media(max-width:900px){
+
+      .hero h2{
+        font-size:42px;
+      }
+
+      .nav-actions{
+        flex-direction:column;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="top-strip">
+    <div>International Research Standards Council (IRSC)</div>
+    <div>Scientific Integrity • Standards • Ethical Validation</div>
+  </div>
+
+  <nav>
+
+    <div class="logo">
+      <h1>IRSC</h1>
+      <p>International Research Standards Council</p>
+    </div>
+
+    <div class="nav-actions">
+
+      <button class="theme-btn" onclick="toggleTheme()">
+        Toggle Theme
+      </button>
+
+      <a href="index.html" class="home-btn">
+        ← Home
+      </a>
+
+    </div>
+
+  </nav>
+
+  <section class="hero">
+
+    <div class="hero-badge">
+      Official Standards Repository
+    </div>
+
+    <h2>
+      IRSC Scientific Standards Repository
+    </h2>
+
+    <p>
+      The IRSC Standards Repository contains structured scientific frameworks,
+      ethical compliance procedures, publication regulations, validation
+      methodologies, and institutional operational guidelines intended to
+      support responsible scientific development, technical transparency,
+      reproducibility, and research integrity.
+    </p>
+
+  </section>
+
+  <section>
+
+    <div class="section-heading">
+
+      <h2>Published Standards & Frameworks</h2>
+
+      <p>
+        All IRSC standards are independently developed procedural frameworks
+        intended to support scientific responsibility, ethical compliance,
+        transparent innovation, reproducibility systems, and institutional
+        research integrity mechanisms.
+      </p>
+
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-AI-101</div>
+      <h3>Artificial Intelligence Ethics Framework</h3>
+      <p>Standards governing ethical AI development and responsible computational deployment.</p>
+      <ul class="clause-list">
+        <li>Mandatory disclosure of AI-assisted methodologies.</li>
+        <li>Algorithmic transparency should be maintained where feasible.</li>
+        <li>Bias assessment documentation shall accompany datasets.</li>
+        <li>Human oversight systems must exist for critical operations.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-RP-201</div>
+      <h3>Research Publication Standards</h3>
+      <p>Frameworks supporting scientific documentation and publication integrity.</p>
+      <ul class="clause-list">
+        <li>All citations must follow recognized academic structures.</li>
+        <li>Fabricated references are prohibited.</li>
+        <li>Methodology sections should provide reproducible clarity.</li>
+        <li>Conflict of interest disclosures are mandatory.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-DV-301</div>
+      <h3>Data Verification Protocols</h3>
+      <p>Procedures supporting reproducibility and dataset integrity verification.</p>
+      <ul class="clause-list">
+        <li>Datasets shall maintain source traceability.</li>
+        <li>Experimental data modification logs should be retained.</li>
+        <li>Verification samples may be requested during review.</li>
+        <li>Statistical inconsistencies require procedural disclosure.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-ES-401</div>
+      <h3>Ethics & Scientific Integrity Standards</h3>
+      <p>Ethical compliance systems supporting research authenticity and transparency.</p>
+      <ul class="clause-list">
+        <li>Plagiarism exceeding acceptable thresholds is prohibited.</li>
+        <li>Manipulation of findings constitutes procedural violation.</li>
+        <li>Ethics declarations shall accompany human-related studies.</li>
+        <li>Undisclosed sponsorship influence is restricted.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-CS-501</div>
+      <h3>Cybersecurity Research Standards</h3>
+      <p>Frameworks governing responsible cybersecurity research practices.</p>
+      <ul class="clause-list">
+        <li>Unauthorized exploitation testing is prohibited.</li>
+        <li>Research must avoid infrastructure disruption.</li>
+        <li>Vulnerability disclosures should follow responsible timelines.</li>
+        <li>Research data confidentiality must be preserved.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-ST-601</div>
+      <h3>STEM Innovation Validation Framework</h3>
+      <p>Validation methodologies for emerging scientific and engineering innovations.</p>
+      <ul class="clause-list">
+        <li>Prototype claims require demonstrable evidence.</li>
+        <li>Performance metrics should be measurable and documented.</li>
+        <li>Safety assessments shall accompany engineering systems.</li>
+        <li>Testing conditions must be transparently disclosed.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-OS-701</div>
+      <h3>Open Science & Accessibility Standards</h3>
+      <p>Frameworks supporting transparency and collaborative scientific accessibility.</p>
+      <ul class="clause-list">
+        <li>Research summaries should remain publicly understandable.</li>
+        <li>Open-access publication is encouraged where feasible.</li>
+        <li>Data sharing limitations must be disclosed.</li>
+        <li>Accessibility accommodations should be considered.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-BT-801</div>
+      <h3>Biotechnology Research Procedures</h3>
+      <p>Standards addressing responsible biotechnology experimentation.</p>
+      <ul class="clause-list">
+        <li>Biohazard containment procedures must be followed.</li>
+        <li>Human genetic data confidentiality is mandatory.</li>
+        <li>Unauthorized biological release testing is prohibited.</li>
+        <li>Ethical approval documentation shall be retained.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-ED-901</div>
+      <h3>Educational Research Integrity Framework</h3>
+      <p>Standards governing academic and educational research systems.</p>
+      <ul class="clause-list">
+        <li>Student research attribution must remain accurate.</li>
+        <li>Educational experiments require informed consent.</li>
+        <li>Evaluation metrics shall remain transparent.</li>
+        <li>Academic falsification is prohibited.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+      <div class="standard-id">IRSC-QA-1001</div>
+      <h3>Quality Assurance & Review Systems</h3>
+      <p>Institutional quality assurance methodologies for research evaluation.</p>
+      <ul class="clause-list">
+        <li>Independent review systems are recommended.</li>
+        <li>Documentation revisions should maintain version history.</li>
+        <li>Review timelines should remain procedurally fair.</li>
+        <li>Appeal mechanisms may exist for disputed reviews.</li>
+      </ul>
+    </div>
+
+    <div class="standard-card">
+
+      <div class="standard-id">IRSC-PV-1101</div>
+
+      <h3>Prototype Validation & Conditional Certification Framework</h3>
+
+      <p>
+        Procedural standards governing conditional research certification for projects,
+        theoretical systems, engineering concepts, computational architectures,
+        scientific models, and emerging technological proposals where immediate
+        demonstrative prototype generation may not be reasonably achievable due to
+        technical, infrastructural, computational, laboratory, engineering, or
+        developmental complexity.
+      </p>
+
+      <ul class="clause-list">
+
+        <li>
+          Research submissions demonstrating sufficient scientific reasoning,
+          structured methodology, technical feasibility, innovation potential,
+          and documentation integrity may qualify for Conditional Validation Certification status.
+        </li>
+
+        <li>
+          Conditional certification may be issued where prototype generation requires
+          extended engineering cycles, specialized infrastructure, computational
+          systems, laboratory environments, hardware fabrication processes,
+          or multi-stage implementation procedures.
+        </li>
+
+        <li>
+          Projects granted Conditional Validation Certification shall submit a
+          functional demonstrative prototype, technical implementation evidence,
+          simulation framework, proof-of-concept system, experimental validation,
+          or equivalent demonstrative material within a maximum duration of
+          sixty (60) calendar days from certification issuance unless formally
+          extended through administrative review procedures.
+        </li>
+
+        <li>
+          Failure to provide required validation materials within the designated
+          review duration may result in certificate suspension, inactive certification
+          status, procedural withdrawal, revocation of conditional validation,
+          or mandatory re-evaluation under applicable IRSC verification frameworks.
+        </li>
+
+        <li>
+          Conditional certification status shall not constitute final technical
+          endorsement, scientific proof, institutional guarantee, regulatory approval,
+          commercial authorization, deployment certification, or operational clearance
+          unless supported through completed validation review procedures.
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div class="legal-note">
+
+      <h3>Institutional Clarification & Administrative Status</h3>
+
+      <p>
+        The International Research Standards Council (IRSC) is an independently operated and privately held standards-oriented committee established for the purpose of encouraging scientific integrity, structured validation systems, ethical research conduct, and responsible publication methodologies.
+      </p>
+
+      <p>
+        IRSC does not represent governmental authority, statutory accreditation, or legally binding regulatory enforcement unless explicitly recognized by applicable jurisdictions or institutions.
+      </p>
+
+      <p>
+        All IRSC frameworks, standards, procedural advisories, institutional methodologies, and scientific review systems are intended to support responsible research ecosystems, voluntary compliance structures, transparent innovation systems, and scientific accountability practices.
+      </p>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    <div>
+      <h3>IRSC</h3>
+      <p>International Research Standards Council</p>
+    </div>
+
+    <div>
+      Scientific Integrity • Ethical Validation • Structured Standards
+    </div>
+
+  </footer>
+
+  <script>
+
+    function toggleTheme(){
+
+      document.body.classList.toggle("dark");
+
+      if(document.body.classList.contains("dark")){
+        localStorage.setItem("theme","dark");
+      }else{
+        localStorage.setItem("theme","light");
+      }
+
+    }
+
+    if(localStorage.getItem("theme")==="dark"){
+      document.body.classList.add("dark");
+    }
+
+  </script>
+
+</body>
+
+</html>
